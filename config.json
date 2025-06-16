@@ -1,0 +1,21 @@
+{
+  "fuzzy_keywords": {
+    "bl": "bootloader",
+    "fb": "fastboot",
+    "rec": "recovery",
+    "rom": "刷机包"
+  },
+  "tricky_words": [
+    "不正确",
+    "不包括",
+    "错误的是",
+    "错误选项",
+    "错误的是",
+    "不是以下哪项",
+    "不能"
+  ],
+  "font": {
+    "family": "微软雅黑",
+    "size": 10
+  }
+}
