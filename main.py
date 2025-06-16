@@ -122,11 +122,14 @@ def show_answer(event):
 def open_github():
     webbrowser.open("https://github.com/YuleBest")
 
-# GUI 构建
+# ------------ GUI 构建 ------------
+
+# -- 首页 --
 root = ttk.Window(themename="flatly")
 root.title("小米BL解锁题库查询工具")
 root.geometry("900x650")
 root.minsize(700, 500)
+root.iconbitmap(resource_path("icon.ico"))
 update_fonts()
 
 style = ttk.Style()
@@ -152,7 +155,7 @@ def on_key_release(event):
     global search_after_id
     if search_after_id:
         root.after_cancel(search_after_id)
-    search_after_id = root.after(500, search)
+    search_after_id = root.after(200, search)
 
 entry.bind("<Return>", search)
 entry.bind("<KeyRelease>", on_key_release)
@@ -202,21 +205,68 @@ text_area.tag_config("secondary", foreground="#6c757d")
 text_area.tag_config("keyword", foreground="#0d6efd", font=font_11_bold)
 text_area.tag_config("tricky", foreground="#ffc107", background="#212529", font=font_11_bold)
 
+
+# -- 问 AI --
+tab_about = ttk.Frame(notebook)
+notebook.add(tab_about, text="问AI")
+about_label = ttk.Label(tab_about, text="正在开发中，敬请期待", font=font_12)
+about_label.pack(pady=20)
+
+# -- 关于 --
 tab_about = ttk.Frame(notebook)
 notebook.add(tab_about, text="关于")
-about_label = ttk.Label(tab_about, text="作者：于乐\n版本：1.0", font=font_12)
-about_label.pack(pady=20)
-ttk.Button(tab_about, text="打开 GitHub", command=open_github, bootstyle="info").pack()
+author_frame = ttk.LabelFrame(tab_about, text="作者信息", padding=10)
+author_frame.pack(fill="x", padx=20, pady=(20, 10))
 
+author_label = ttk.Label(
+    author_frame,
+    text="作者：于乐\n版本：1.1",
+    font=font_12,
+    justify="center",
+    anchor="center"
+)
+author_label.pack()
+
+ttk.Button(
+    author_frame,
+    text="打开 GitHub",
+    command=open_github,
+    bootstyle="info"
+).pack(pady=(10, 0))
+
+changelog_frame = ttk.LabelFrame(tab_about, text="更新日志", padding=10)
+changelog_frame.pack(fill="both", expand=True, padx=20, pady=(10, 20))
+
+changelog_text = """\
+# v1.1:
+- 优化界面布局
+- 增加「关于 - 更新日志」显示区域
+- 增加「问AI」占位页
+- 把搜索事件的防抖从 500ms 优化至 200ms，搜索体验更佳
+- 优化图标展示
+- 暂时移除字体大小调整，将字体调整改为下拉框样式
+
+# v1.0:
+- 初始版本发布
+"""
+log_label = ttk.Label(
+    changelog_frame,
+    text=changelog_text,
+    font=font_10,
+    justify="left",
+    anchor="w"
+)
+log_label.pack(fill="x")
+
+# -- 设置 --
 tab_settings = ttk.Frame(notebook)
 notebook.add(tab_settings, text="设置")
 
+available_fonts = sorted(tkFont.families())
+font_sizes = [8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40]
+
 font_family_var = tk.StringVar(value=FONT_CONF.get("family", "Microsoft YaHei"))
 font_size_var = tk.StringVar(value=str(FONT_CONF.get("size", 11)))
-ttk.Label(tab_settings, text="字体名称：").pack(pady=(20, 5))
-ttk.Entry(tab_settings, textvariable=font_family_var).pack()
-ttk.Label(tab_settings, text="字体大小：").pack(pady=(20, 5))
-ttk.Entry(tab_settings, textvariable=font_size_var).pack()
 
 def apply_font_settings():
     FONT_CONF["family"] = font_family_var.get()
@@ -236,7 +286,37 @@ def apply_font_settings():
     text_area.tag_config("tricky", font=font_11_bold)
     about_label.config(font=font_12)
 
-ttk.Button(tab_settings, text="应用字体", command=apply_font_settings, bootstyle="primary").pack(pady=20)
+font_frame = ttk.LabelFrame(tab_settings, text="字体设置", padding=10)
+font_frame.pack(fill="x", padx=20, pady=20)
+
+row1 = ttk.Frame(font_frame)
+row1.pack(fill="x", pady=5)
+row1.columnconfigure(1, weight=1)
+ttk.Label(row1, text="字体名称：", width=10).grid(row=0, column=0, sticky="w")
+ttk.Combobox(
+    row1,
+    textvariable=font_family_var,
+    values=available_fonts,
+    state="readonly"
+).grid(row=0, column=1, sticky="ew")
+
+""" row2 = ttk.Frame(font_frame)
+row2.pack(fill="x", pady=5)
+row2.columnconfigure(1, weight=1)
+ttk.Label(row2, text="字体大小：", width=10).grid(row=0, column=0, sticky="w")
+ttk.Combobox(
+    row2,
+    textvariable=font_size_var,
+    values=[str(size) for size in font_sizes],
+    state="readonly"
+).grid(row=0, column=1, sticky="ew") """
+
+ttk.Button(
+    font_frame,
+    text="应用字体",
+    command=apply_font_settings,
+    bootstyle="primary"
+).pack(pady=(10, 0))
 
 result_list.bind("<<ListboxSelect>>", show_answer)
 root.mainloop()
