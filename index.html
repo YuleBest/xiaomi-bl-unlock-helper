@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>题库搜索</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+</head>
+<body>
+    <!-- 版权验证对话框 -->
+    <div id="copyrightDialog" class="copyright-dialog">
+        <div class="copyright-dialog-content">
+            <div class="copyright-dialog-header">
+                <h3>声明</h3>
+            </div>
+            <div class="copyright-dialog-body">
+                 <div class="disclaimer-content">
+                     <p><strong>免费项目，禁止倒卖</strong></p>
+                     <p>作者：<strong><a href="https://github.com/YuleBest" target="_blank" class="author-link">Yule</a></strong></p>
+                     
+                     <div class="important-notice">
+                         <h4>重要声明：</h4>
+                         <ul>
+                             <li>此项目非小米官方项目，与小米官方无关</li>
+                             <li>任何将此项目倒卖、商用或对本项目进行投诉、举报等行为均可能导致本项目立刻删库、关闭服务器</li>
+                             <li>由上述行为或使用本网站所造成的一切问题（包括但不限于小米账号被封禁/拉黑、法律风险），由使用者自负</li>
+                             <li>其他未尽事宜，最终解释权归本项目的作者所有</li>
+                             <li><strong>使用本网站即表示您同意以上协定</strong></li>
+                         </ul>
+                     </div>
+                 </div>
+                 
+                 <p class="verification-prompt">请完成以下验证以继续使用：</p>
+                <div class="math-verification">
+                    <span id="mathQuestion"></span>
+                    <input type="number" id="mathAnswer" placeholder="请输入答案">
+                </div>
+            </div>
+            <div class="copyright-dialog-footer">
+                <button id="verifyBtn" class="verify-btn">验证</button>
+            </div>
+        </div>
+    </div>
+    <!-- 顶栏 -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <img src="icon.ico" alt="Logo" class="top-bar-icon">
+            <h1 class="top-bar-title">题库查询</h1>
+            <span class="top-bar-version">V1.2</span>
+        </div>
+        <div class="top-bar-right">
+            <button class="top-bar-btn" id="themeToggle" title="切换主题">
+                <span class="material-icons" id="themeIcon">dark_mode</span>
+            </button>
+            <button class="top-bar-btn" id="calculatorBtn" title="计算器">
+                <span class="material-icons">calculate</span>
+            </button>
+            <button class="top-bar-btn" title="GitHub" onclick="window.open('https://github.com/YuleBest/xiaomi-bl-unlock-helper', '_blank')">
+                <span class="material-icons">code</span>
+            </button>
+        </div>
+    </header>
+    
+    <div class="container mdc-typography">
+        
+        <div class="search-container">
+          <label class="mdc-text-field mdc-text-field--outlined search-input">
+            <span class="mdc-notched-outline">
+              <span class="mdc-notched-outline__leading"></span>
+              <span class="mdc-notched-outline__notch">
+                <span class="mdc-floating-label" id="search-label">请输入要搜索的内容</span>
+              </span>
+              <span class="mdc-notched-outline__trailing"></span>
+            </span>
+            <input type="text" class="mdc-text-field__input" id="searchInput" aria-labelledby="search-label">
+          </label>
+          
+          <div class="search-bottom">
+            <div class="search-filters">
+              <div class="custom-form-field">
+                <input type="checkbox" class="custom-checkbox" id="searchQuestion" checked>
+                <label for="searchQuestion">搜索题干</label>
+              </div>
+              
+              <div class="custom-form-field">
+                <input type="checkbox" class="custom-checkbox" id="searchOptions" checked>
+                <label for="searchOptions">搜索选项</label>
+              </div>
+            </div>
+            
+            <div class="search-settings">
+              <button class="mdc-icon-button" id="settingsButton" aria-label="展开选项">
+                <i class="material-icons mdc-icon-button__icon">expand_more</i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- 设置面板 -->
+          <div class="settings-panel" id="settingsPanel" style="display: none;">
+            <div class="settings-section">
+              <h3 class="settings-title">模糊词设置</h3>
+              <p class="settings-description">设置关键词映射，例如："bl" → "bootloader"</p>
+              <div class="fuzzy-keywords-container" id="fuzzyKeywordsContainer">
+                <!-- 动态生成的模糊词设置项 -->
+              </div>
+              <button class="add-fuzzy-btn" id="addFuzzyBtn">
+                <i class="material-icons">add</i>
+                添加映射
+              </button>
+            </div>
+            
+            <div class="settings-section">
+              <h3 class="settings-title">高亮词设置</h3>
+              <p class="settings-description">设置需要在搜索结果中红色高亮显示的词汇</p>
+              <div class="tricky-words-container" id="trickyWordsContainer">
+                <!-- 动态生成的高亮词设置项 -->
+              </div>
+              <button class="add-tricky-btn" id="addTrickyBtn">
+                <i class="material-icons">add</i>
+                添加高亮词
+              </button>
+            </div>
+            
+            <div class="settings-actions">
+              <button class="apply-settings-btn" id="applySettingsBtn">
+                <i class="material-icons">check</i>
+                应用设置
+              </button>
+              <button class="reset-settings-btn" id="resetSettingsBtn">
+                <i class="material-icons">refresh</i>
+                重置设置
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="searchInfo" class="search-info" style="display: none;">
+          <div class="result-count"></div>
+          <hr class="result-divider">
+        </div>
+
+        <div id="results" class="mdc-list"></div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-links">
+            <button class="footer-btn" id="feedbackBtn">
+                <span class="material-icons">help_outline</span>
+                反馈与帮助
+            </button>
+            <button class="footer-btn" id="joinDevBtn">
+                <span class="material-icons">code</span>
+                加入开发
+            </button>
+        </div>
+        <div class="footer-update-info">
+            <span id="lastUpdateTime">题库最后更新于 加载中...</span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+      mdc.autoInit();
+    </script>
+</body>
+</html>
