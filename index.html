@@ -10,13 +10,16 @@
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 </head>
 <body>
-    <!-- 版权验证对话框 -->
-    <div id="copyrightDialog" class="copyright-dialog">
-        <div class="copyright-dialog-content">
-            <div class="copyright-dialog-header">
-                <h3>声明</h3>
+    <!-- 重要声明对话框 -->
+    <div id="disclaimerDialog" class="disclaimer-dialog" style="display: none;">
+        <div class="disclaimer-dialog-content">
+            <div class="disclaimer-dialog-header">
+                <h3>重要声明</h3>
+                <button class="close-btn" id="closeDisclaimerBtn">
+                    <span class="material-icons">close</span>
+                </button>
             </div>
-            <div class="copyright-dialog-body">
+            <div class="disclaimer-dialog-body">
                  <div class="disclaimer-content">
                      <p><strong>免费项目，禁止倒卖</strong></p>
                      <p>作者：<strong><a href="https://github.com/YuleBest" target="_blank" class="author-link">Yule</a></strong></p>
@@ -32,15 +35,6 @@
                          </ul>
                      </div>
                  </div>
-                 
-                 <p class="verification-prompt">请完成以下验证以继续使用：</p>
-                <div class="math-verification">
-                    <span id="mathQuestion"></span>
-                    <input type="number" id="mathAnswer" placeholder="请输入答案">
-                </div>
-            </div>
-            <div class="copyright-dialog-footer">
-                <button id="verifyBtn" class="verify-btn">验证</button>
             </div>
         </div>
     </div>
@@ -49,7 +43,7 @@
         <div class="top-bar-left">
             <img src="icon.ico" alt="Logo" class="top-bar-icon">
             <h1 class="top-bar-title">题库查询</h1>
-            <span class="top-bar-version">V1.2</span>
+            <span class="top-bar-version">V1.3</span>
         </div>
         <div class="top-bar-right">
             <button class="top-bar-btn" id="themeToggle" title="切换主题">
@@ -63,6 +57,22 @@
             </button>
         </div>
     </header>
+    
+    <!-- 重要声明横幅 -->
+    <div class="disclaimer-banner">
+        <div class="disclaimer-banner-content">
+            <div class="disclaimer-banner-icon">
+                <span class="material-icons">info</span>
+            </div>
+            <div class="disclaimer-banner-text">
+                <span class="disclaimer-banner-title">重要声明</span>
+                <span class="disclaimer-banner-desc">免费项目，禁止倒卖</span>
+            </div>
+            <button class="disclaimer-banner-btn" id="disclaimerBannerBtn">
+                <span class="material-icons">chevron_right</span>
+            </button>
+        </div>
+    </div>
     
     <div class="container mdc-typography">
         
@@ -138,11 +148,17 @@
         </div>
 
         <div id="searchInfo" class="search-info" style="display: none;">
-          <div class="result-count"></div>
+          <div class="search-info-header">
+            <div class="result-count"></div>
+          </div>
           <hr class="result-divider">
         </div>
 
-        <div id="results" class="mdc-list"></div>
+        <div class="results-container">
+          <div class="results-gradient-top"></div>
+          <div id="results" class="mdc-list"></div>
+          <div class="results-gradient-bottom"></div>
+        </div>
     </div>
 
     <!-- 页面底部 -->

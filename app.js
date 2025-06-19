@@ -154,7 +154,11 @@ function renderResults(matches) {
     const mergedQuestions = mergeQuestionsByTitle(matches);
     
     // 显示结果计数
-    resultCountDiv.textContent = `${mergedQuestions.length} 个结果 (原始 ${matches.length} 个)`;
+    if (currentSearchTerm) {
+        resultCountDiv.textContent = `${mergedQuestions.length} 个结果 (原始 ${matches.length} 个)`;
+    } else {
+        resultCountDiv.textContent = `共 ${mergedQuestions.length} 道题目 (原始 ${matches.length} 个)`;
+    }
     searchInfoDiv.style.display = "block";
 
     const ul = document.createElement("ul");
@@ -255,22 +259,28 @@ function performSearch() {
     const keyword = searchInput.value.trim();
     currentSearchTerm = keyword;
     
-    if (!keyword) {
-        resultsDiv.innerHTML = "";
-        searchInfoDiv.style.display = "none";
-        return;
-    }
-
     if (!dataLoaded) {
         resultsDiv.innerHTML = "加载数据中...";
         loadAllData().then(() => {
-            const matched = allQuestions.filter(q => q.question && matchQuery(q, keyword));
+            let matched;
+            if (!keyword) {
+                // 没有搜索关键词时显示所有题目
+                matched = allQuestions.filter(q => q.question);
+            } else {
+                matched = allQuestions.filter(q => q.question && matchQuery(q, keyword));
+            }
             // 按原始索引排序
             matched.sort((a, b) => a.originalIndex - b.originalIndex);
             renderResults(matched);
         });
     } else {
-        const matched = allQuestions.filter(q => q.question && matchQuery(q, keyword));
+        let matched;
+        if (!keyword) {
+            // 没有搜索关键词时显示所有题目
+            matched = allQuestions.filter(q => q.question);
+        } else {
+            matched = allQuestions.filter(q => q.question && matchQuery(q, keyword));
+        }
         // 按原始索引排序
         matched.sort((a, b) => a.originalIndex - b.originalIndex);
         renderResults(matched);
@@ -551,114 +561,75 @@ initializeTheme();
 
 applySettingsBtn.addEventListener('click', applySettings);
 
-// 版权验证对话框相关变量
-let mathAnswer = 0;
-let isVerified = false;
-
-// 生成随机数学题
-function generateMathQuestion() {
-    const num1 = Math.floor(Math.random() * 50) + 1; // 1-50
-    const num2 = Math.floor(Math.random() * 50) + 1; // 1-50
-    const operation = Math.random() > 0.5 ? '+' : '-';
+// 显示重要声明对话框
+function showDisclaimerDialog() {
+    const dialog = document.getElementById('disclaimerDialog');
+    const content = dialog.querySelector('.disclaimer-dialog-content');
     
-    let question, answer;
-    if (operation === '+') {
-        question = `${num1} + ${num2} = ?`;
-        answer = num1 + num2;
-    } else {
-        // 确保减法结果为正数
-        const larger = Math.max(num1, num2);
-        const smaller = Math.min(num1, num2);
-        question = `${larger} - ${smaller} = ?`;
-        answer = larger - smaller;
-    }
-    
-    mathAnswer = answer;
-    return question;
-}
-
-// 显示版权验证对话框
-function showCopyrightDialog() {
-    const dialog = document.getElementById('copyrightDialog');
-    const mathQuestion = document.getElementById('mathQuestion');
-    const mathAnswerInput = document.getElementById('mathAnswer');
-    const verifyBtn = document.getElementById('verifyBtn');
-    
-    // 生成数学题
-    mathQuestion.textContent = generateMathQuestion();
-    
-    // 清空输入框
-    mathAnswerInput.value = '';
+    // 重置动画状态
+    dialog.style.animation = '';
+    content.style.animation = '';
     
     // 显示对话框
     dialog.style.display = 'flex';
     
-    // 聚焦到输入框
-    setTimeout(() => {
-        mathAnswerInput.focus();
-    }, 300);
-    
-    // 移除旧的事件监听器，避免重复绑定
-    verifyBtn.removeEventListener('click', verifyCopyright);
-    mathAnswerInput.removeEventListener('keypress', handleEnterKey);
-    
-    // 重新绑定事件监听器
-    verifyBtn.addEventListener('click', verifyCopyright);
-    mathAnswerInput.addEventListener('keypress', handleEnterKey);
+    // 添加背景渐显动画
+    dialog.style.animation = 'backgroundFadeIn 0.3s ease-out forwards';
+    content.style.animation = 'dialogFadeIn 0.3s ease-out forwards';
 }
 
-// 处理回车键事件的函数
-function handleEnterKey(e) {
-    if (e.key === 'Enter') {
-        verifyCopyright();
-    }
-}
-
-// 验证版权对话框
-function verifyCopyright() {
-    const mathAnswerInput = document.getElementById('mathAnswer');
-    const verifyBtn = document.getElementById('verifyBtn');
-    const userAnswer = parseInt(mathAnswerInput.value);
+// 隐藏重要声明对话框
+function hideDisclaimerDialog() {
+    const dialog = document.getElementById('disclaimerDialog');
+    const content = dialog.querySelector('.disclaimer-dialog-content');
     
-    if (isNaN(userAnswer)) {
-        alert('请输入有效的数字！');
-        mathAnswerInput.focus();
-        return;
-    }
-    
-    if (userAnswer === mathAnswer) {
-        // 验证成功
-        isVerified = true;
-        const dialog = document.getElementById('copyrightDialog');
-        dialog.style.animation = 'dialogFadeOut 0.3s ease-in forwards';
-        
-        // 添加淡出动画
+    // 确保动画样式只添加一次
+    if (!document.getElementById('dialogAnimationStyles')) {
         const style = document.createElement('style');
+        style.id = 'dialogAnimationStyles';
         style.textContent = `
-            @keyframes dialogFadeOut {
+            @keyframes backgroundFadeIn {
+                from {
+                    background-color: rgba(0, 0, 0, 0);
+                }
+                to {
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+            }
+            
+            @keyframes backgroundFadeOut {
+                from {
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+                to {
+                    background-color: rgba(0, 0, 0, 0);
+                }
+            }
+            
+            @keyframes contentFadeOut {
                 from {
                     opacity: 1;
-                    transform: scale(1);
+                    transform: scale(1) translateY(0);
                 }
                 to {
                     opacity: 0;
-                    transform: scale(0.9);
+                    transform: scale(0.9) translateY(-20px);
                 }
             }
         `;
         document.head.appendChild(style);
-        
-        setTimeout(() => {
-            dialog.style.display = 'none';
-        }, 300);
-    } else {
-        // 验证失败，重新生成题目
-        alert('答案错误，请重新计算！');
-        const mathQuestion = document.getElementById('mathQuestion');
-        mathQuestion.textContent = generateMathQuestion();
-        mathAnswerInput.value = '';
-        mathAnswerInput.focus();
     }
+    
+    // 分别为背景和内容设置不同的动画
+    dialog.style.animation = 'backgroundFadeOut 0.3s ease-in forwards';
+    content.style.animation = 'contentFadeOut 0.3s ease-in forwards';
+    
+    setTimeout(() => {
+        dialog.style.display = 'none';
+        // 清除动画状态，为下次显示做准备
+        dialog.style.animation = '';
+        content.style.animation = '';
+    }, 300);
 }
 
 // 显示题库最后更新时间
@@ -675,11 +646,30 @@ function displayLastUpdateTime() {
     }
 }
 
-// 检查是否需要显示版权对话框
-function checkCopyrightVerification() {
-    // 每次页面加载都显示对话框，不依赖localStorage
-    // 这样可以确保每次访问都需要验证
-    showCopyrightDialog();
+// 初始化重要声明对话框事件监听器
+function initializeDisclaimerDialog() {
+    const disclaimerBannerContent = document.querySelector('.disclaimer-banner-content');
+    const closeDisclaimerBtn = document.getElementById('closeDisclaimerBtn');
+    const disclaimerDialog = document.getElementById('disclaimerDialog');
+    
+    // 点击横幅内容区域显示对话框（整个横幅都可点击）
+    if (disclaimerBannerContent) {
+        disclaimerBannerContent.addEventListener('click', showDisclaimerDialog);
+    }
+    
+    // 点击关闭按钮隐藏对话框
+    if (closeDisclaimerBtn) {
+        closeDisclaimerBtn.addEventListener('click', hideDisclaimerDialog);
+    }
+    
+    // 点击对话框背景隐藏对话框
+    if (disclaimerDialog) {
+        disclaimerDialog.addEventListener('click', function(e) {
+            if (e.target === disclaimerDialog) {
+                hideDisclaimerDialog();
+            }
+        });
+    }
 }
 
 // 页面加载完成后初始化
@@ -698,6 +688,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 显示题库更新时间（确保在数据加载完成后）
     displayLastUpdateTime();
+    
+    // 初始显示所有题目
+    performSearch();
     
     // 添加计算器按钮事件监听器
     const calculatorBtn = document.getElementById('calculatorBtn');
@@ -722,6 +715,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
     
-    // 检查版权验证
-    checkCopyrightVerification();
+    // 初始化重要声明对话框
+    initializeDisclaimerDialog();
+    
+
 });
