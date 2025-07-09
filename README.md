@@ -38,17 +38,19 @@
 
 ### 本地部署
 1. 克隆或下载项目到本地
-2. 使用任意Web服务器托管项目文件
-3. 访问 `index.html` 开始使用
-
-### 简单HTTP服务器
 ```bash
-# 使用Python启动简单服务器
-python -m http.server 8000
-
-# 或使用Node.js
-npx http-server
+git clone https://github.com/YuleBest/xiaomi-bl-unlock-helper.git
 ```
+
+2. 在项目根目录运行 Python 脚本
+> 请确保你安装了 Python，或自行使用其他工具。
+```bash
+cd xiaomi-bl-unlock-helper
+python sever.py
+```
+
+3. 访问 http://localhost:{PORT} 开始使用
+> 注意：PORT 为你运行 Python 脚本时指定的端口号，默认为 8000。
 
 ## 📁 项目结构
 
@@ -57,12 +59,12 @@ xiaomi-bl-unlock-helper/
 ├── index.html              # 主页面文件
 ├── app.js                  # 核心JavaScript逻辑
 ├── style.css               # 样式文件
-├── icon.ico                # 网站图标
+├── favicon.png             # 网站图标
 ├── data/
 │   ├── database/
 │   │   └── questions.json  # 题库数据
 │   └── fonts/
-│       └── DIN.ttf         # 自定义字体
+│       └── DIN.ttf         # 数字字体
 └── README.md               # 项目说明文档
 ```
 
