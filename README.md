@@ -46,7 +46,7 @@ git clone https://github.com/YuleBest/xiaomi-bl-unlock-helper.git
 > 请确保你安装了 Python，或自行使用其他工具。
 ```bash
 cd xiaomi-bl-unlock-helper
-python sever.py
+python server.py
 ```
 
 3. 访问 http://localhost:{PORT} 开始使用
@@ -59,6 +59,7 @@ xiaomi-bl-unlock-helper/
 ├── index.html              # 主页面文件
 ├── app.js                  # 核心JavaScript逻辑
 ├── style.css               # 样式文件
+├── server.py               # 本地部署脚本
 ├── favicon.png             # 网站图标
 ├── data/
 │   ├── database/
