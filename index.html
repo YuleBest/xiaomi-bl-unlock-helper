@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>题库搜索</title>
-    <link rel="stylesheet" href="./style/material-components-web.min.css">
-    <link rel="stylesheet" href="./style/main.css" />
-    <script src="./app/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="/style/material-components-web.min.css">
+    <link rel="stylesheet" href="/style/main.css" />
+    <script src="/app/material-components-web.min.js"></script>
 </head>
 <body>
     <!-- 重要声明对话框 -->
@@ -46,6 +46,9 @@
             <span class="top-bar-version">V1.3</span>
         </div>
         <div class="top-bar-right">
+            <button class="top-bar-btn" id="star" title="收藏">
+                <span class="material-icons">star</span>
+            </button>
             <button class="top-bar-btn" id="themeToggle" title="切换主题">
                 <span class="material-icons" id="themeIcon">dark_mode</span>
             </button>
@@ -74,8 +77,7 @@
         </div>
     </div>
     
-    <div class="container mdc-typography">
-        
+    <div class="container mdc-typography"> 
         <div class="search-container">
           <label class="mdc-text-field mdc-text-field--outlined search-input">
             <span class="mdc-notched-outline">
@@ -178,7 +180,7 @@
         </div>
     </footer>
 
-    <script src="./app/app.js"></script>
+    <script src="/app/app.js"></script>
     <script>
       mdc.autoInit();
     </script>

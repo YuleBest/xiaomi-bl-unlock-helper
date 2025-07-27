@@ -155,9 +155,9 @@ function renderResults(matches) {
     
     // 显示结果计数
     if (currentSearchTerm) {
-        resultCountDiv.textContent = `${mergedQuestions.length} 个结果 (原始 ${matches.length} 个)`;
+        resultCountDiv.textContent = `${mergedQuestions.length} 个结果，合并前 ${matches.length} 个题目`;
     } else {
-        resultCountDiv.textContent = `共 ${mergedQuestions.length} 道题目 (原始 ${matches.length} 个)`;
+        resultCountDiv.textContent = `共 ${mergedQuestions.length} 道题目，合并前 ${matches.length} 个题目`;
     }
     searchInfoDiv.style.display = "block";
 
@@ -210,7 +210,28 @@ function renderResults(matches) {
             optionsUl.appendChild(optionLi);
         }
         textContainer.appendChild(optionsUl);
+        
+        // 添加收藏按钮
+        const starButton = document.createElement("button");
+        starButton.className = "star-btn";
+        starButton.title = "收藏题目";
+        starButton.innerHTML = '<span class="material-icons">star_border</span>';
+        starButton.setAttribute('data-question-id', item.originalIndex);
+        
+        // 检查是否已收藏
+        if (isQuestionStarred(item.originalIndex)) {
+            starButton.classList.add('starred');
+            starButton.innerHTML = '<span class="material-icons">star</span>';
+        }
+        
+        starButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleStar(item.originalIndex, item);
+            updateStarButton(starButton, item.originalIndex);
+        });
+        
         li.appendChild(textContainer);
+        li.appendChild(starButton);
         ul.appendChild(li);
     }
     resultsDiv.appendChild(ul);
@@ -332,6 +353,52 @@ function loadSettings() {
 
 function saveSettings() {
     localStorage.setItem('searchSettings', JSON.stringify(currentSettings));
+}
+
+// 收藏功能相关函数
+function getStarredQuestions() {
+    const starred = localStorage.getItem('starredQuestions');
+    return starred ? JSON.parse(starred) : {};
+}
+
+function saveStarredQuestions(starred) {
+    localStorage.setItem('starredQuestions', JSON.stringify(starred));
+}
+
+function isQuestionStarred(questionId) {
+    const starred = getStarredQuestions();
+    return starred.hasOwnProperty(questionId);
+}
+
+function toggleStar(questionId, questionData) {
+    const starred = getStarredQuestions();
+    
+    if (starred[questionId]) {
+        // 取消收藏
+        delete starred[questionId];
+    } else {
+        // 添加收藏
+        starred[questionId] = {
+            question: questionData.question,
+            options: questionData.options,
+            originalIndex: questionData.originalIndex,
+            starredAt: new Date().toISOString()
+        };
+    }
+    
+    saveStarredQuestions(starred);
+}
+
+function updateStarButton(button, questionId) {
+    if (isQuestionStarred(questionId)) {
+        button.classList.add('starred');
+        button.innerHTML = '<span class="material-icons">star</span>';
+        button.title = '取消收藏';
+    } else {
+        button.classList.remove('starred');
+        button.innerHTML = '<span class="material-icons">star_border</span>';
+        button.title = '收藏题目';
+    }
 }
 
 // 设置面板相关函数
@@ -718,5 +785,26 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 初始化重要声明对话框
     initializeDisclaimerDialog();
     
+    // 初始化收藏功能
+    initializeStarFeature();
 
 });
+
+// 初始化收藏功能
+function initializeStarFeature() {
+    // 顶栏收藏按钮点击事件
+    const starBtn = document.getElementById('star');
+    if (starBtn) {
+        starBtn.addEventListener('click', function() {
+            window.location.href = '/star/';
+        });
+    }
+    
+    // 主页收藏入口按钮点击事件
+    const starredEntryBtn = document.getElementById('starredEntryBtn');
+    if (starredEntryBtn) {
+        starredEntryBtn.addEventListener('click', function() {
+            window.location.href = '/star/';
+        });
+    }
+}

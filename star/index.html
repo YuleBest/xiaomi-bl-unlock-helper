@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>收藏的题目 - 题库搜索</title>
+    <link rel="stylesheet" href="/style/material-components-web.min.css">
+    <link rel="stylesheet" href="/style/main.css" />
+    <script src="/app/material-components-web.min.js"></script>
+    <script src="/app/app.js"></script>
+    <script src="/star/star.js"></script>
+</head>
+
+<body>
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <img src="/favicon.png" alt="Logo" class="top-bar-icon">
+            <h1 class="top-bar-title">题库查询</h1>
+            <span class="top-bar-version">V1.3</span>
+        </div>
+        <div class="top-bar-right">
+            <button class="top-bar-btn" id="star" title="收藏">
+                <span class="material-icons">star</span>
+            </button>
+            <button class="top-bar-btn" id="themeToggle" title="切换主题">
+                <span class="material-icons" id="themeIcon">dark_mode</span>
+            </button>
+            <button class="top-bar-btn" id="calculatorBtn" title="计算器">
+                <span class="material-icons">calculate</span>
+            </button>
+            <button class="top-bar-btn" title="GitHub" onclick="window.open('https://github.com/YuleBest/xiaomi-bl-unlock-helper', '_blank')">
+                <span class="material-icons">code</span>
+            </button>
+        </div>
+    </header>
+    
+    <div class="container mdc-typography">
+        <div class="starred-header">
+            <div class="starred-title">
+                <h2>收藏的题目</h2>
+                <span class="starred-count" id="starredCount">0 道题目</span>
+            </div>
+            <div class="starred-actions">
+                <button class="back-btn" id="backBtn">
+                    <span class="material-icons">arrow_back</span>
+                    <span>返回主页</span>
+                </button>
+                <button class="clear-all-btn" id="clearAllBtn">
+                    <span class="material-icons">clear_all</span>
+                    <span>清空收藏</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="starred-content">
+            <div id="starredResults" class="starred-results"></div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <span class="material-icons">star_border</span>
+                </div>
+                <h3>还没有收藏的题目</h3>
+                <p>在主页浏览题目时，点击题目卡片右侧的收藏图标即可收藏题目</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
