@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>解锁时间计算器 - 答题助手</title>
+    <link rel="stylesheet" href="/style/material-components-web.min.css">
+    <link rel="stylesheet" href="/style/main.css" />
+    <script src="/app/material-components-web.min.js"></script>
+    <script src="/calc/calc.js"></script>
+</head>
+
+<body>
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <img src="/favicon.png" alt="Logo" class="top-bar-icon">
+            <h1 class="top-bar-title">答题助手</h1>
+            <span class="top-bar-version">V1.4</span>
+        </div>
+        <div class="top-bar-right">
+            <button class="top-bar-btn" id="star" title="收藏">
+                <span class="material-icons">star</span>
+            </button>
+            <button class="top-bar-btn" id="themeToggle" title="切换主题">
+                <span class="material-icons" id="themeIcon">dark_mode</span>
+            </button>
+            <button class="top-bar-btn" id="calculatorBtn" title="计算器">
+                <span class="material-icons">calculate</span>
+            </button>
+            <button class="top-bar-btn" title="GitHub" onclick="window.open('https://github.com/YuleBest/xiaomi-bl-unlock-helper', '_blank')">
+                <span class="material-icons">code</span>
+            </button>
+        </div>
+    </header>
+    
+    <div class="container mdc-typography">
+        <div class="calc-header">
+            <div class="calc-title">
+                <h2>解锁时间计算器</h2>
+                <p class="calc-description">
+                    根据小米BL解锁规则，计算是否可以解锁：
+                    <br>1. <b>资格过期时间：</b>获得资格时间 +14 天（336 小时），资格过期后无法解锁
+                    <br>2. <b>等待期结束时间：</b>设备绑定时间 +72 小时，等待期结束后才能解锁
+                    <br>3. <b>计划解锁时间：</b>必须在时间 2 之后、时间 1 之前才能解锁
+                    <br>4. <b>资格检查：</b>填完所有项后，根据上面的规则，判断是否可以在计划解锁时间时完成解锁，并实时展示结果
+                </p>
+            </div>
+            <div class="calc-actions">
+                <button class="back-btn" id="backBtn">
+                    <span class="material-icons">arrow_back</span>
+                    <span>返回主页</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 提示信息 -->
+        <div class="storage-notice">
+            <div class="notice-icon">
+                <span class="material-icons">info</span>
+            </div>
+            <div class="notice-text">
+                <strong>BETA版本</strong><br>如果遇到问题请在 GitHub 提交或者私信我
+            </div>
+        </div>
+        
+        <div class="calc-form-container">
+            <form class="calc-form" id="calcForm">
+                <!-- 获得资格时间 -->
+                <div class="form-section">
+                    <h3>获得资格时间</h3>
+                    <div class="input-group">
+                        <label class="mdc-text-field mdc-text-field--outlined">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">选择获得资格的日期和时间</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input type="datetime-local" class="mdc-text-field__input" id="qualificationTime" required>
+                        </label>
+                    </div>
+                    <div class="result-display" id="qualificationResult" style="display: none;">
+                        <div class="result-item">
+                            <span class="result-label">资格过期时间：</span>
+                            <span class="result-value" id="qualificationExpiry"></span>
+                        </div>
+                        <div class="result-note">资格过期后无法解锁</div>
+                    </div>
+                </div>
+                
+                <!-- 设备绑定时间 -->
+                <div class="form-section">
+                    <h3>设备绑定时间</h3>
+                    <div class="time-mode-selector">
+                        <div class="mode-tabs">
+                            <button type="button" class="mode-tab active" data-mode="absolute" id="bindAbsoluteTab">绝对时间</button>
+                            <button type="button" class="mode-tab" data-mode="relative" id="bindRelativeTab">相对时间</button>
+                        </div>
+                    </div>
+                    <div class="input-group" id="bindAbsoluteInput">
+                        <label class="mdc-text-field mdc-text-field--outlined">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">选择设备绑定的日期和时间</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input type="datetime-local" class="mdc-text-field__input" id="bindTimeAbsolute">
+                        </label>
+                    </div>
+                    <div class="input-group" id="bindRelativeInput" style="display: none;">
+                        <label class="mdc-text-field mdc-text-field--outlined">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">相对于获得资格时间</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input type="text" class="mdc-text-field__input" id="bindTimeRelative" placeholder="例如：1天12时30分">
+                        </label>
+                        <div class="input-suffix">后绑定</div>
+                    </div>
+                    <div class="result-display" id="bindResult" style="display: none;">
+                        <div class="result-item">
+                            <span class="result-label">等待期结束时间：</span>
+                            <span class="result-value" id="waitingPeriodEnd"></span>
+                        </div>
+                        <div class="result-note">等待期结束后才能解锁</div>
+                    </div>
+                </div>
+                
+                <!-- 计划解锁时间 -->
+                <div class="form-section">
+                    <h3>计划解锁时间</h3>
+                    <div class="time-mode-selector">
+                        <div class="mode-tabs">
+                            <button type="button" class="mode-tab active" data-mode="absolute" id="unlockAbsoluteTab">绝对时间</button>
+                            <button type="button" class="mode-tab" data-mode="relative" id="unlockRelativeTab">相对时间</button>
+                        </div>
+                    </div>
+                    <div class="input-group" id="unlockAbsoluteInput">
+                        <label class="mdc-text-field mdc-text-field--outlined">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">选择计划解锁的日期和时间</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input type="datetime-local" class="mdc-text-field__input" id="unlockTimeAbsolute">
+                        </label>
+                    </div>
+                    <div class="input-group" id="unlockRelativeInput" style="display: none;">
+                        <label class="mdc-text-field mdc-text-field--outlined">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">相对于设备绑定时间</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input type="text" class="mdc-text-field__input" id="unlockTimeRelative" placeholder="例如：3天2时15分">
+                        </label>
+                        <div class="input-suffix">后解锁</div>
+                    </div>
+                </div>
+                
+                <!-- 资格检查结果 -->
+                <div class="result-section" id="finalResult" style="display: none;">
+                    <h3>资格检查结果</h3>
+                    <div class="final-result-card" id="resultCard">
+                        <div class="result-status" id="resultStatus"></div>
+                        <div class="result-details" id="resultDetails"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

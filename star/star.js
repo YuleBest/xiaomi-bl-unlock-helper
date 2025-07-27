@@ -1,4 +1,4 @@
-        mdc.autoInit();
+mdc.autoInit();
         
         // 收藏功能相关函数（从app.js复制）
          function getStarredQuestions() {
@@ -130,6 +130,23 @@
         }
         
         function initializeStarredPageEvents() {
+            // 顶栏按钮事件监听器
+            // 收藏按钮（当前页面，可以刷新或不做操作）
+            const starBtn = document.getElementById('star');
+            if (starBtn) {
+                starBtn.addEventListener('click', function() {
+                    window.location.href = '/star/';
+                });
+            }
+            
+            // 计算器按钮
+            const calculatorBtn = document.getElementById('calculatorBtn');
+            if (calculatorBtn) {
+                calculatorBtn.addEventListener('click', function() {
+                    window.location.href = '/calc/';
+                });
+            }
+            
             // 返回主页按钮
             const backBtn = document.getElementById('backBtn');
             const backToHomeBtn = document.getElementById('backToHomeBtn');
@@ -146,9 +163,33 @@
             const clearAllBtn = document.getElementById('clearAllBtn');
             if (clearAllBtn) {
                 clearAllBtn.addEventListener('click', function() {
-                    if (confirm('确定要清空所有收藏的题目吗？此操作不可撤销！')) {
+                    if (confirm('确定要清空所有收藏的题目吗？此操作不可撤销。')) {
                         localStorage.removeItem('starredQuestions');
                         loadStarredQuestions();
+                    }
+                });
+            }
+            
+            // 备份收藏按钮
+            const backupBtn = document.getElementById('backupBtn');
+            if (backupBtn) {
+                backupBtn.addEventListener('click', function() {
+                    exportStarredQuestions();
+                });
+            }
+            
+            // 导入收藏按钮
+            const importBtn = document.getElementById('importBtn');
+            const importFileInput = document.getElementById('importFileInput');
+            if (importBtn && importFileInput) {
+                importBtn.addEventListener('click', function() {
+                    importFileInput.click();
+                });
+                
+                importFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        importStarredQuestions(file);
                     }
                 });
             }
@@ -181,4 +222,77 @@
                 }
                 localStorage.setItem('theme', theme);
             }
+        }
+        
+        // 导出收藏的题目
+        function exportStarredQuestions() {
+            const starredQuestions = getStarredQuestions();
+            const questionCount = Object.keys(starredQuestions).length;
+            
+            if (questionCount === 0) {
+                alert('没有收藏的题目可以备份');
+                return;
+            }
+            
+            const exportData = {
+                exportTime: new Date().toISOString(),
+                version: '1.0',
+                count: questionCount,
+                data: starredQuestions
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `starred_questions_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert(`备份成功！已导出 ${questionCount} 道收藏的题目`);
+        }
+        
+        // 导入收藏的题目
+        function importStarredQuestions(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // 检查文件格式
+                    if (!importedData.data || typeof importedData.data !== 'object') {
+                        throw new Error('文件格式不正确');
+                    }
+                    
+                    const existingQuestions = getStarredQuestions();
+                    const existingIds = new Set(Object.keys(existingQuestions));
+                    
+                    let newCount = 0;
+                    let skipCount = 0;
+                    
+                    // 合并数据
+                    Object.keys(importedData.data).forEach(questionId => {
+                        if (!existingIds.has(questionId)) {
+                            existingQuestions[questionId] = importedData.data[questionId];
+                            newCount++;
+                        } else {
+                            skipCount++;
+                        }
+                    });
+                    
+                    saveStarredQuestions(existingQuestions);
+                    loadStarredQuestions();
+                    
+                    alert(`导入成功！新增 ${newCount} 道题目，跳过 ${skipCount} 道重复题目。`);
+                } catch (error) {
+                    console.error('导入错误:', error);
+                    alert('导入失败：文件格式不正确或文件损坏');
+                }
+                
+                // 清空文件输入
+                document.getElementById('importFileInput').value = '';
+            };
+            reader.readAsText(file);
         }

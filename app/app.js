@@ -763,7 +763,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const calculatorBtn = document.getElementById('calculatorBtn');
     if (calculatorBtn) {
         calculatorBtn.addEventListener('click', function() {
-            alert('正在开发中，敬请期待！');
+            window.location.href = '/calc/';
         });
     }
     
