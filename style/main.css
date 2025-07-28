@@ -1378,11 +1378,18 @@ body {
     }
     
     .footer-btn {
-        padding: 10px 16px;
-        font-size: 13px;
+        flex-direction: column;
+        padding: 12px 8px;
+        font-size: 12px;
         width: 100%;
-        max-width: 200px;
+        max-width: 120px;
         justify-content: center;
+        gap: 4px;
+        min-height: 60px;
+    }
+    
+    .footer-btn .material-icons {
+        font-size: 20px;
     }
     
     .footer-update-info {
