@@ -8,7 +8,7 @@
 /* fallback */
 @font-face {
     font-family: 'DIN';
-    src: url('../data/fonts/DIN.ttf') format('truetype');
+    src: url('/data/fonts/DIN.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }
@@ -438,6 +438,7 @@ body {
 /* 搜索筛选器样式 */
 /* 搜索容器整体样式 */
 .search-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* 使用系统字体 */
     background: var(--search-container-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -1398,39 +1399,226 @@ body {
     }
 }
 
-/* 收藏功能样式 */
-.star-btn {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 8px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* 题号点击样式 */
+.question-number.clickable {
+    background-color: rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    color: var(--text-color);
+    padding: 1px 4px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-family: 'DIN', monospace;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.question-number.clickable:hover {
+    background-color: rgba(0, 0, 0, 0.12);
+    transform: scale(1.05);
+    backdrop-filter: blur(15px);
+}
+
+/* 深色模式下的题号样式 */
+[data-theme="dark"] .question-number.clickable {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .question-number.clickable:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 题目模糊卡片样式 */
+.question-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--icon-color);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.star-btn:hover {
-    background-color: var(--hover-color);
+.question-modal-overlay.show {
+    opacity: 1;
+}
+
+.question-modal-card {
+    background-color: var(--bg-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.question-modal-overlay.show .question-modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.question-modal-content {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.question-modal-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.question-modal-number {
+    background-color: rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    color: var(--text-color);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: 'DIN', monospace;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 深色模式下的模糊卡片题号样式 */
+[data-theme="dark"] .question-modal-number {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.question-modal-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.question-modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.question-modal-option {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--text-color);
 }
 
-.star-btn.starred {
+.question-modal-option.correct {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-color: #4caf50;
+    color: #2e7d32;
+}
+
+.question-modal-option.incorrect {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-color: #f44336;
+    color: #c62828;
+}
+
+.question-modal-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    background-color: var(--input-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.modal-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    justify-content: center;
+}
+
+.modal-action-btn:hover {
+    background-color: var(--hover-color);
+    border-color: var(--text-color);
+}
+
+.modal-action-btn.star-action {
+    border-color: #ffc107;
     color: #ffc107;
 }
 
-.star-btn.starred:hover {
-    color: #ff9800;
+.modal-action-btn.star-action:hover {
+    background-color: rgba(255, 193, 7, 0.1);
 }
 
-.star-btn .material-icons {
-    font-size: 20px;
+.modal-action-btn.star-action.starred {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ff9800;
+    border-color: #ff9800;
+}
+
+.modal-action-btn.copy-action {
+    border-color: #2196f3;
+    color: #2196f3;
+}
+
+.modal-action-btn.copy-action:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.modal-action-btn.question-action {
+    border-color: #9c27b0;
+    color: #9c27b0;
+}
+
+.modal-action-btn.question-action:hover {
+    background-color: rgba(156, 39, 176, 0.1);
+}
+
+/* 移动端模糊卡片响应式 */
+@media (max-width: 768px) {
+    .question-modal-card {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .question-modal-content {
+        padding: 20px;
+        max-height: 50vh;
+    }
+    
+    .question-modal-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .question-modal-actions {
+        padding: 12px 20px;
+    }
+    
+    .modal-action-btn {
+        padding: 12px;
+        font-size: 16px;
+    }
 }
 
 /* 收藏入口样式 */

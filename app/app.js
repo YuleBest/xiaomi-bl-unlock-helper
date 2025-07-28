@@ -180,8 +180,15 @@ function renderResults(matches) {
         
         // 创建题号元素
         const questionNumber = document.createElement("span");
-        questionNumber.className = "question-number";
+        questionNumber.className = "question-number clickable";
         questionNumber.textContent = item.originalIndex;
+        questionNumber.style.cursor = "pointer";
+        
+        // 为题号添加点击事件
+        questionNumber.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showQuestionModal(item);
+        });
         
         // 创建题干文本元素
         const questionText = document.createElement("span");
@@ -211,27 +218,7 @@ function renderResults(matches) {
         }
         textContainer.appendChild(optionsUl);
         
-        // 添加收藏按钮
-        const starButton = document.createElement("button");
-        starButton.className = "star-btn";
-        starButton.title = "收藏题目";
-        starButton.innerHTML = '<span class="material-icons">star_border</span>';
-        starButton.setAttribute('data-question-id', item.originalIndex);
-        
-        // 检查是否已收藏
-        if (isQuestionStarred(item.originalIndex)) {
-            starButton.classList.add('starred');
-            starButton.innerHTML = '<span class="material-icons">star</span>';
-        }
-        
-        starButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleStar(item.originalIndex, item);
-            updateStarButton(starButton, item.originalIndex);
-        });
-        
         li.appendChild(textContainer);
-        li.appendChild(starButton);
         ul.appendChild(li);
     }
     resultsDiv.appendChild(ul);
@@ -399,6 +386,237 @@ function updateStarButton(button, questionId) {
         button.innerHTML = '<span class="material-icons">star_border</span>';
         button.title = '收藏题目';
     }
+}
+
+// 显示题目模糊卡片
+function showQuestionModal(questionData) {
+    // 创建模糊背景
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'question-modal-overlay';
+    
+    // 创建卡片容器
+    const modalCard = document.createElement('div');
+    modalCard.className = 'question-modal-card';
+    
+    // 创建题目内容
+    const questionContent = document.createElement('div');
+    questionContent.className = 'question-modal-content';
+    
+    // 题号和题干
+    const questionHeader = document.createElement('div');
+    questionHeader.className = 'question-modal-header';
+    questionHeader.innerHTML = `
+        <span class="question-modal-number">${questionData.originalIndex}</span>
+        <div class="question-modal-text">${questionData.question}</div>
+    `;
+    
+    // 选项列表
+    const optionsList = document.createElement('div');
+    optionsList.className = 'question-modal-options';
+    
+    questionData.options.forEach(option => {
+        const optionItem = document.createElement('div');
+        optionItem.className = `question-modal-option ${option.is_correct === 'true' ? 'correct' : 'incorrect'}`;
+        optionItem.textContent = option.option;
+        optionsList.appendChild(optionItem);
+    });
+    
+    // 操作栏
+    const actionBar = document.createElement('div');
+    actionBar.className = 'question-modal-actions';
+    
+    // 收藏按钮
+    const starBtn = document.createElement('button');
+    starBtn.className = 'modal-action-btn star-action';
+    const isStarred = isQuestionStarred(questionData.originalIndex);
+    starBtn.innerHTML = `
+        <span class="material-icons">${isStarred ? 'star' : 'star_border'}</span>
+        <span>${isStarred ? '取消' : '收藏'}</span>
+    `;
+    if (isStarred) starBtn.classList.add('starred');
+    
+    starBtn.addEventListener('click', () => {
+        toggleStar(questionData.originalIndex, questionData);
+        const newIsStarred = isQuestionStarred(questionData.originalIndex);
+        starBtn.innerHTML = `
+            <span class="material-icons">${newIsStarred ? 'star' : 'star_border'}</span>
+            <span>${newIsStarred ? '取消' : '收藏'}</span>
+        `;
+        if (newIsStarred) {
+            starBtn.classList.add('starred');
+        } else {
+            starBtn.classList.remove('starred');
+        }
+    });
+    
+    // 复制按钮
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'modal-action-btn copy-action';
+    copyBtn.innerHTML = `
+        <span class="material-icons">content_copy</span>
+        <span>复制</span>
+    `;
+    copyBtn.addEventListener('click', async () => {
+        try {
+            // 构建复制内容
+            let copyText = '我在「答题助手」给你分享了一道题目，快打开 bl.lh520.pw 看看吧！\n';
+            copyText += `${questionData.originalIndex}、${questionData.question}\n`;
+            
+            // 添加选项，按正确性排序
+            const sortedOptions = [...questionData.options].sort((a, b) => {
+                const aCorrect = a.is_correct === "true";
+                const bCorrect = b.is_correct === "true";
+                if (aCorrect && !bCorrect) return -1;
+                if (!aCorrect && bCorrect) return 1;
+                return 0;
+            });
+            
+            sortedOptions.forEach(option => {
+                const status = option.is_correct === "true" ? "正确" : "错误";
+                copyText += `[${status}] ${option.option}\n`;
+            });
+            
+            // 复制到剪贴板
+            await navigator.clipboard.writeText(copyText);
+            
+            // 显示成功提示
+            copyBtn.innerHTML = `
+                <span class="material-icons">check</span>
+                <span>成功</span>
+            `;
+            copyBtn.style.borderColor = '#4caf50';
+            copyBtn.style.color = '#4caf50';
+            
+            // 2秒后恢复原状
+            setTimeout(() => {
+                copyBtn.innerHTML = `
+                    <span class="material-icons">content_copy</span>
+                    <span>复制</span>
+                `;
+                copyBtn.style.borderColor = '';
+                copyBtn.style.color = '';
+            }, 2000);
+            
+        } catch (err) {
+            console.error('复制失败:', err);
+            // 显示失败提示
+            copyBtn.innerHTML = `
+                <span class="material-icons">error</span>
+                <span>失败</span>
+            `;
+            copyBtn.style.borderColor = '#f44336';
+            copyBtn.style.color = '#f44336';
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = `
+                    <span class="material-icons">content_copy</span>
+                    <span>复制</span>
+                `;
+                copyBtn.style.borderColor = '';
+                copyBtn.style.color = '';
+            }, 2000);
+        }
+    });
+    
+    // 疑问按钮
+    const questionBtn = document.createElement('button');
+    questionBtn.className = 'modal-action-btn question-action';
+    questionBtn.innerHTML = `
+        <span class="material-icons">help_outline</span>
+        <span>疑问</span>
+    `;
+    questionBtn.addEventListener('click', () => {
+        // 显示确认对话框
+        const confirmed = confirm(
+            '即将跳转到 GitHub 仓库发起工单反馈问题。\n\n' +
+            '您可以在那里报告题目错误、提出改进建议或反馈其他问题。\n\n' +
+            '确定要继续吗？'
+        );
+        
+        if (confirmed) {
+            // 构建GitHub Issues URL，包含题目信息作为模板
+            const issueTitle = encodeURIComponent(`题目疑问 - 第${questionData.originalIndex}题`);
+            const issueBody = encodeURIComponent(
+                `### 题目信息\n` +
+                `**题号：** ${questionData.originalIndex}\n` +
+                `**题目：** ${questionData.question}\n\n` +
+                `### 问题描述\n` +
+                `请在此处描述您发现的问题或疑问...\n\n` +
+                `### 建议的修改\n` +
+                `如果您有修改建议，请在此处说明...\n\n` +
+                `---\n` +
+                `*此工单由答题助手自动生成*`
+            );
+            
+            const githubUrl = `https://github.com/YuleBest/xiaomi-bl-unlock-helper/issues/new?title=${issueTitle}&body=${issueBody}`;
+            
+            // 在新窗口中打开GitHub
+            window.open(githubUrl, '_blank');
+            
+            // 显示成功提示
+            questionBtn.innerHTML = `
+                <span class="material-icons">launch</span>
+                <span>已跳转</span>
+            `;
+            questionBtn.style.borderColor = '#4caf50';
+            questionBtn.style.color = '#4caf50';
+            
+            // 2秒后恢复原状
+            setTimeout(() => {
+                questionBtn.innerHTML = `
+                    <span class="material-icons">help_outline</span>
+                    <span>疑问</span>
+                `;
+                questionBtn.style.borderColor = '';
+                questionBtn.style.color = '';
+            }, 2000);
+        }
+    });
+    
+    actionBar.appendChild(starBtn);
+    actionBar.appendChild(copyBtn);
+    actionBar.appendChild(questionBtn);
+    
+    // 组装卡片
+    questionContent.appendChild(questionHeader);
+    questionContent.appendChild(optionsList);
+    modalCard.appendChild(questionContent);
+    modalCard.appendChild(actionBar);
+    modalOverlay.appendChild(modalCard);
+    
+    // 添加到页面
+    document.body.appendChild(modalOverlay);
+    
+    // 添加淡入动画
+    setTimeout(() => {
+        modalOverlay.classList.add('show');
+    }, 10);
+    
+    // 点击背景关闭
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            hideQuestionModal(modalOverlay);
+        }
+    });
+    
+    // ESC键关闭
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            hideQuestionModal(modalOverlay);
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+}
+
+// 隐藏题目模糊卡片
+function hideQuestionModal(modalOverlay) {
+    modalOverlay.classList.remove('show');
+    setTimeout(() => {
+        if (modalOverlay.parentNode) {
+            modalOverlay.parentNode.removeChild(modalOverlay);
+        }
+    }, 300);
 }
 
 // 设置面板相关函数
