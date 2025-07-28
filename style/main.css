@@ -149,7 +149,7 @@
 
 /* 重要声明横幅样式 */
 .disclaimer-banner {
-    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    background: linear-gradient(135deg, #ffa217 0%, #f88e25 100%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -275,13 +275,14 @@ body {
     max-width: 720px;
     margin: 0 auto;
     padding: 12px;
+    padding-bottom: 0;
     box-sizing: border-box;
 }
 
 #results {
-    max-height: 800px; /* 大幅增加高度 */
+    max-height: 150vh;
     overflow-y: auto;
-    /* 移除旧的边框等，MDC List 会处理 */
+    padding: 0;
 }
 
 .question-item {
@@ -490,6 +491,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     padding-right: 20px;
     padding-left: 20px;
     padding-bottom: 5px;
+    margin-top: 5px;
     margin-bottom: 15px;
     box-shadow: var(--search-container-shadow);
     transition: all 0.3s ease;
@@ -695,6 +697,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     .container {
         max-width: 100%;
         padding: 16px;
+        padding-bottom: 0;
         box-sizing: border-box;
     }
     
@@ -708,7 +711,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     }
     
     #results {
-        max-height: calc(100vh - 120px);
+        max-height: 70vh;
     }
     
     .question-item {
@@ -775,6 +778,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     }
     
     .search-container {
+        margin-top: 0;
         border-radius: 10px;
     }
     
@@ -1372,7 +1376,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 
 /* 页面底部样式 */
 .page-footer {
-    margin-top: 5px;
+    margin-top: 0px;
     padding: 24px;
     background-color: var(--bg-color);
     border-top: 1px solid var(--border-color);
