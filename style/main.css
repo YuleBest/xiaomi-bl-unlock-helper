@@ -2,15 +2,7 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url('./material-icon-font.woff2') format('woff2');
-}
-
-/* fallback */
-@font-face {
-    font-family: 'DIN';
-    src: url('/data/fonts/DIN.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
+  src: url('/style/material-icon-font.woff2') format('woff2');
 }
 
 .material-icons {
@@ -117,7 +109,6 @@
     border-radius: 6px;
     font-size: 13px;
     font-weight: 500;
-    font-family: 'DIN', monospace;
 }
 
 .top-bar-right {
@@ -129,7 +120,7 @@
 .top-bar-btn {
     background: none;
     border: none;
-    padding: 10px;
+    padding: 5px;
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -319,7 +310,6 @@ body {
     flex-shrink: 0;
     white-space: nowrap;
     overflow: hidden;
-    font-family: 'DIN', monospace;
 }
 
 .options-list {
@@ -688,10 +678,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     
     .top-bar-right {
         gap: 6px;
-    }
-    
-    .top-bar-btn {
-        padding: 8px;
     }
     
     .container {
@@ -1364,9 +1350,9 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     }
     
     .top-bar-btn {
-        padding: 8px;
-        min-width: 40px;
-        min-height: 40px;
+        padding: 0px;
+        min-width: 30px;
+        min-height: 30px;
     }
     
     .top-bar-btn .material-icons {
@@ -1457,7 +1443,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     padding: 1px 4px;
     border-radius: 6px;
     font-weight: 600;
-    font-family: 'DIN', monospace;
     transition: all 0.3s ease;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -1536,7 +1521,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     border-radius: 8px;
     font-weight: 600;
     font-size: 12px;
-    font-family: 'DIN', monospace;
     flex-shrink: 0;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -2016,7 +2000,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
  .result-value {
      font-weight: 600;
      color: #2196f3;
-     font-family: 'DIN', monospace;
  }
  
  .result-note {
