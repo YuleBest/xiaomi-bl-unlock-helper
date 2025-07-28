@@ -1631,8 +1631,8 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 /* 移动端模糊卡片响应式 */
 @media (max-width: 768px) {
     .question-modal-card {
-        width: 95%;
-        max-height: 90vh;
+        width: 90%;
+        max-height: 100vh;
     }
     
     .question-modal-content {
@@ -1646,7 +1646,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     }
     
     .question-modal-actions {
-        padding: 12px 20px;
+        padding: 15px 20px;
     }
     
     .modal-action-btn {
