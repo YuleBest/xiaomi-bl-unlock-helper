@@ -782,6 +782,19 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
     
+    const downloadDbBtn = document.getElementById('downloadDbBtn');
+    if (downloadDbBtn) {
+        downloadDbBtn.addEventListener('click', function() {
+            // 创建一个临时的a标签来触发下载
+            const link = document.createElement('a');
+            link.href = '/data/database/questions.json';
+            link.download = 'questions.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    }
+    
     // 初始化重要声明对话框
     initializeDisclaimerDialog();
     
