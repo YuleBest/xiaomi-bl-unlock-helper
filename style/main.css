@@ -390,6 +390,45 @@ body {
 
 .mdc-text-field .mdc-floating-label {
     color: var(--icon-color) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
+}
+
+/* 覆盖所有 Material Design 组件的 Roboto 字体设置 */
+.mdc-banner .mdc-banner__text,
+.mdc-button .mdc-button__label,
+.mdc-list-item__text,
+.mdc-list-item__secondary-text,
+.mdc-typography--headline4,
+.mdc-typography--headline5,
+.mdc-typography--headline6,
+.mdc-typography--subtitle1,
+.mdc-typography--subtitle2,
+.mdc-typography--body1,
+.mdc-typography--body2,
+.mdc-typography--caption,
+.mdc-typography--button,
+.mdc-typography--overline {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
+}
+
+/* 覆盖所有基础HTML元素的字体设置，但排除Material Icons */
+body, html,
+h1, h2, h3, h4, h5, h6,
+p, div, a, li, ul, ol,
+label, input, textarea,
+.starred-count, .notice-text, .calc-description {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
+}
+
+/* 为非图标的span和button元素设置系统字体 */
+span:not(.material-icons),
+button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.footer-btn) {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
+}
+
+/* 确保Material Icons字体不被覆盖 */
+.material-icons {
+    font-family: 'Material Icons' !important;
 }
 
 .mdc-text-field .mdc-line-ripple::before {
@@ -569,6 +608,7 @@ body {
     color: var(--icon-color);
     font-size: 14px;
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* 使用系统字体 */
 }
 
 
@@ -721,6 +761,7 @@ body {
     
     .result-count {
         font-size: 13px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* 使用系统字体 */
     }
     
     .results-gradient-top,
