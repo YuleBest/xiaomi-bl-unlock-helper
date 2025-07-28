@@ -1018,6 +1018,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 初始化收藏功能
     initializeStarFeature();
+    
+    // 添加顶栏左侧点击返回主页功能
+    const topBarLeft = document.querySelector('.top-bar-left');
+    if (topBarLeft) {
+        topBarLeft.style.cursor = 'pointer';
+        topBarLeft.addEventListener('click', function() {
+            // 如果当前不在主页，则跳转到主页
+            if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+                window.location.href = '/';
+            }
+        });
+    }
 
 });
 

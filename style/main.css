@@ -89,6 +89,11 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    transition: opacity 0.2s ease;
+}
+
+.top-bar-left:hover {
+    opacity: 0.8;
 }
 
 .top-bar-icon {

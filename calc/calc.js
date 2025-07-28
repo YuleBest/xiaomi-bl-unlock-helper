@@ -62,6 +62,15 @@ function initializeCalcPage() {
         }
         localStorage.setItem('theme', theme);
     }
+    
+    // 添加顶栏左侧点击返回主页功能
+    const topBarLeft = document.querySelector('.top-bar-left');
+    if (topBarLeft) {
+        topBarLeft.style.cursor = 'pointer';
+        topBarLeft.addEventListener('click', function() {
+            window.location.href = '/';
+        });
+    }
 }
 
 function initializeCalculator() {
