@@ -2,7 +2,6 @@
 <h1 align="center"> Xiaomi BL Unlock Helper </h1>
 <h3 align="center"> 小米 BL 解锁答题助手 </h3>
 <p align="center">一款面向小米手机用户的客户端 Web 应用，助你备考小米解锁 Bootloader 考试，应用支持智能题库搜索、收藏管理和解锁资格计算，且支持离线运行</p>
-<div style="text-align: center;"><a href="https://bl.lh520.pw/">在线访问我们的网站</a></div>
 
 ---
 
@@ -11,8 +10,8 @@
   <a href="#主要功能">主要功能</a>丨
   <a href="#系统架构">系统架构</a>丨
   <a href="#快速开始">快速开始</a>丨
-  <a href="#贡献者">贡献者</a>丨
-  <a href="#许可证">许可证</a>丨
+  <a href="#贡献指南">贡献指南</a>丨
+  <a href="#许可协议">许可协议</a>丨
   <a href="#致谢">致谢</a>
 </p>
 
@@ -44,7 +43,7 @@
 
 ### 数据存储
 
-- 题库数据存储在结构化的静态 `JSON` 文件 [questions.json](./data/database/question.json) 中
+- 题库数据存储在结构化的静态 `JSON` 文件 [questions.json](./data/database/questions.json) 中
 
 - 用户收藏和自定义搜索偏好通过浏览器 `localStorage` 本地保存
 
