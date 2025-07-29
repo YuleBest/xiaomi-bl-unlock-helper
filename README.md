@@ -153,7 +153,7 @@ Press Ctrl+C to stop the server
   <img src="./_pic/star-2.png" style="zoom: 50%;" />
 
 - 资格计算器：根据个人信息和状态，自动计算是否满足小米解锁资格条件
-  <img src="./_Pic/calc.jpeg" style="zoom:33%;" />
+  <img src="./_pic/calc.jpeg" style="zoom:33%;" />
 
 ---
 
