@@ -1,5 +1,5 @@
 // 数据文件路径
-const dataFile = "./data/database/questions.json";
+const dataFile = "/data/database/questions.json";
 
 let allQuestions = [];
 let dataLoaded = false;
