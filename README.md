@@ -173,7 +173,7 @@ Press Ctrl+C to stop the server
 
 ## 致谢
 
-- Google Material Components for the Web (https://github.com/material-components/material-components-web)，使用 MIT 许可证
+- [Google Material Components Web] (https://github.com/material-components/material-components-web) ，使用 MIT 许可证
 
 ---
 
