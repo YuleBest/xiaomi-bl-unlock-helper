@@ -21,30 +21,32 @@ jobs:
         run: |
           npm install -g html-minifier terser clean-css-cli
 
-      - name: Prepare dist folder
+      - name: 复制文件到 dist 目录
         run: |
-          mkdir dist
-          cp index.html dist/
-          cp -r styles dist/styles
-          cp -r scripts dist/scripts
+          mkdir -p dist
+          cp -r index.html favicon.png style app calc star data _pic dist/
+          find dist -name '*.md' -delete
+          find dist -name 'server.py' -delete
 
-      - name: Minify HTML
+      - name: 压缩 HTML
         run: |
-          html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true dist/index.html -o dist/index.html
+          find dist -name "*.html" | while read file; do
+            html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true "$file" -o "$file"
+          done
 
-      - name: Minify CSS
+      - name: 压缩 CSS
         run: |
-          for file in $(find dist/styles -name "*.css"); do
+          find dist -name "*.css" | while read file; do
             cleancss -o "$file" "$file"
           done
 
-      - name: Minify JS
+      - name: 压缩 JS
         run: |
-          for file in $(find dist/scripts -name "*.js"); do
-            terser "$file" -o "$file" -c -m
+          find dist -name "*.js" | while read file; do
+            terser "$file" -o "$file" -c -m || echo "Skip if already minified"
           done
 
-      - name: Push to cf-pages branch
+      - name: Push 压缩后的文件到 Cloudflare Pages
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -52,9 +54,13 @@ jobs:
           git rm -rf .
           cp -r dist/* .
           git add .
-          git commit -m "Compressed build $(date)"
+          git commit -m "Deploy compressed assets $(date)"
           git push -f origin cf-pages
 
-      - name: Trigger Cloudflare Deploy Hook
+      - name: 触发 Cloudflare Pages 部署
         run: |
           curl -X POST "${{ secrets.CF_DEPLOY_HOOK_URL }}"
+
+      - name: 清理 dist 目录
+        run: |
+          rm -rf dist
