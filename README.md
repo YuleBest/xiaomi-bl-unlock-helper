@@ -43,7 +43,7 @@
 
 ### 数据存储
 
-- 题库数据存储在结构化的静态 `JSON` 文件 [questions.json](./data/database/question.json) 中
+- 题库数据存储在结构化的静态 `JSON` 文件 [questions.json](./data/database/questions.json) 中
 
 - 用户收藏和自定义搜索偏好通过浏览器 `localStorage` 本地保存
 
