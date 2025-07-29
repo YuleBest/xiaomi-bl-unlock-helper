@@ -1,115 +1,179 @@
-# 小米BL解锁助手题库搜索工具
-
-一个专为小米手机 Bootloader 解锁考试设计的题库搜索工具，帮助用户快速查找和学习相关知识点。
-
-## 🌟 项目特色
-
-- **智能搜索**：支持题干和选项的全文搜索
-- **模糊匹配**：内置关键词映射功能（如 "bl" → "bootloader"）
-- **高亮显示**：自动标记重要词汇和搜索结果
-- **主题切换**：支持明暗主题模式
-- **响应式设计**：适配各种屏幕尺寸
-- **Material Design**：特色版 Material Design 3 设计语言
-
-## 📋 功能介绍
-
-### 核心功能
-- 🔍 **题库搜索**：快速搜索小米 BL 解锁相关题目
-- ⚙️ **搜索设置**：可自定义模糊词映射和高亮词
-- 📱 **响应式界面**：支持桌面和移动设备
-- 🌙 **主题切换**：明暗主题自由切换
-
-### 搜索功能
-- **多关键词搜索**：支持空格分隔的多个关键词
-- **范围选择**：可选择搜索题干、选项或两者
-- **智能高亮**：搜索结果和重要词汇自动高亮
-- **实时搜索**：输入即时显示搜索结果
-
-### 自定义设置
-- **模糊词设置**：自定义关键词映射关系
-- **高亮词设置**：设置需要特别标注的词汇
-- **设置持久化**：配置自动保存到本地
-
-## 🚀 快速开始
-
-### 在线使用
-访问 [bl.lh520.pw](https://bl.lh520.pw)。
-> 中文互联网用户可能需要使用代理工具。
-
-### 本地部署
-1. 克隆或下载项目到本地
-```bash
-git clone https://github.com/YuleBest/xiaomi-bl-unlock-helper.git
-```
-
-2. 在项目根目录运行 Python 脚本
-> 请确保你安装了 Python，或自行使用其他工具。
-```bash
-cd xiaomi-bl-unlock-helper
-python server.py
-```
-
-3. 访问 http://localhost:{PORT} 开始使用
-> 注意：PORT 为你运行 Python 脚本时指定的端口号，默认为 8000。
-
-## 📖 使用说明
-
-### 基本搜索
-1. 在搜索框中输入关键词
-2. 选择搜索范围（题干/选项）
-3. 查看搜索结果和答案
-
-### 高级设置
-1. 点击搜索框右侧的下拉按钮
-2. 配置模糊词映射（如："bl" → "bootloader"）
-3. 设置高亮词汇（如："错误"、"不正确"等）
-4. 点击"应用设置"保存配置
-
-### 主题切换
-点击顶部工具栏的主题切换按钮，在明暗主题间切换。
-
-## ⚠️ 重要声明
-
-- 此项目**非小米官方项目**，与小米官方无关
-- 本项目为**免费开源项目**，禁止倒卖或商用
-- 使用本工具所产生的任何问题由使用者自负
-- 项目仅供学习交流使用
-
-## 🤝 贡献指南
-
-欢迎提交 Issue 和 Pull Request 来改进项目或更新题库：
-
-### 题库更新
-如需更新题库，请修改 `data/database/questions.json` 文件，格式如下：
-
-```json
-[
-  {"lastestUpdate": "2025/6/18 08:03"},
-  {
-    "question": "题目内容",
-    "options": [
-      {"option": "选项A", "is_correct": "false"},
-      {"option": "选项B", "is_correct": "true"},
-      {"option": "选项C", "is_correct": "false"}
-    ]
-  }
-]
-```
-
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-## 👨‍💻 作者
-
-**Yule** - [GitHub](https://github.com/YuleBest)
-
-## 🔗 相关链接
-
-- [项目主页](https://github.com/YuleBest/xiaomi-bl-unlock-helper)
-- [问题反馈](https://github.com/YuleBest/xiaomi-bl-unlock-helper/issues)
-- [小米解锁官网](https://www.miui.com/unlock/)
+<p align="center"><img src="favicon.png" style="width: 30%;"></p>
+<h1 align="center"> Xiaomi BL Unlock Helper </h1>
+<h3 align="center"> 小米 BL 解锁答题助手 </h3>
+<p align="center">一款面向小米手机用户的客户端 Web 应用，助你备考小米解锁 Bootloader 考试，应用支持智能题库搜索、收藏管理和解锁资格计算，且支持离线运行</p>
+<div style="text-align: center;"><a href="https://bl.lh520.pw/">在线访问我们的网站</a></div>
 
 ---
 
-如果这个项目对你有帮助，请给个 ⭐ Star 支持一下！
+<p align="center">
+  <a href="#项目简介">项目简介</a>丨
+  <a href="#主要功能">主要功能</a>丨
+  <a href="#系统架构">系统架构</a>丨
+  <a href="#快速开始">快速开始</a>丨
+  <a href="#贡献者">贡献者</a>丨
+  <a href="#许可证">许可证</a>丨
+  <a href="#致谢">致谢</a>
+</p>
+
+---
+
+## 项目简介
+
+`xiaomi-bl-unlock-helper` 是一个专为准备小米解锁 Bootloader 考试的用户设计的 Web 应用。
+
+它通过集成题库数据，实现模糊搜索、收藏管理以及解锁资格计算功能，支持离线使用，该项目旨在提供轻量、易用且功能丰富的备考工具，帮助用户高效掌握解锁相关知识点。
+
+![V1.4.1 - 主页](./_pic/home.jpeg)
+
+---
+
+## 主要功能
+
+| 模块名称           | 路径    | 主要脚本        | 作用说明                                                     |
+| ------------------ | ------- | --------------- | ------------------------------------------------------------ |
+| 题库智能搜索与浏览 | `/`     | `/app/app.js`   | 题库智能搜索与浏览，支持模糊匹配与关键词高亮，快速定位所需题目 |
+| 收藏管理           | `/star` | `/star/star.js` | 收藏题目管理与导入导出，方便收藏重要题目，支持浏览器本地持久化及导入导出 |
+| 解锁资格计算器     | `/calc` | `/calc/calc.js` | 自动计算解锁资格条件，输入相关信息，自动判断解锁资格是否满足要求 |
+
+---
+
+## 系统架构
+
+> 所有业务逻辑均在浏览器端运行，无需依赖服务器，实现离线支持
+
+### 数据存储
+
+- 题库数据存储在结构化的静态 `JSON` 文件 [questions.json](./data/database/question.json) 中
+
+- 用户收藏和自定义搜索偏好通过浏览器 `localStorage` 本地保存
+
+  - 收藏数据支持文件导入导出，方便跨设备同步
+    <img src="./_pic/star.jpeg" />
+
+### 开发环境
+### 技术栈
+
+```
+├─ LICENSE
+├─ README.md
+├─ _pic
+│   ├─ calc.jpeg
+│   ├─ home.jpeg
+│   ├─ star-2.png
+│   └─ star.jpeg
+├─ app
+│   ├─ app.js
+│   └─ material-components-web.min.js
+├─ calc
+│   ├─ _note.md
+│   ├─ calc.js
+│   └─ index.html
+├─ data
+│   └─ database
+│       └─ questions.json
+├─ favicon.png
+├─ index.html
+├─ server.py
+├─ star
+│   ├─ index.html
+│   └─ star.js
+└─ style
+    ├─ main.css
+    ├─ material-components-web.min.css
+    └─ material-icon-font.woff2
+```
+
+#### 前端
+
+- HTML + CSS+ JavaScript
+
+
+​		Material Design Components (`material-components-web.min.js`)
+
+​		自定义 CSS (`style/main.css`) 实现主题和响应式布局
+
+#### 数据管理
+
+- 静态 JSON 题库 (`questions.json`)
+
+- 浏览器本地存储
+
+- 文件 API 实现收藏导入导出
+
+---
+
+## 快速开始
+
+### 在线使用（推荐）
+
+- **在线访问我们部署在 Cloudflare Pages 的网站：**[bl.lh520.pw](https://bl.lh520.pw)
+
+- 或者使用备用域名：[xiaomi-bl-unlock-helper.pages.dev](https://xiaomi-bl-unlock-helper.pages.dev)
+
+### 离线部署
+
+> 使用下面的方法需要你有 Python 环境，如果你没有，可以自行使用 `node` 等工具开启本地服务器，但不建议直接使用浏览器打开 `index.html`，那可能会导致一些错误
+
+1. 克隆或下载本项目的代码
+
+   ```bash
+   git clone https://github.com/YuleBest/xiaomi-bl-unlock-helper.git
+   ```
+
+2. 进入项目目录
+
+   ```bash
+   cd xiaomi-bl-unlock-helper
+   ```
+
+3. 运行部署脚本
+
+   ```bash
+   python server.py
+   ```
+
+如果一切正常，你会看到类似下面的输出：
+
+```
+Server is starting...
+
+- Local access:    http://localhost:8000
+- LAN access:      http://198.18.0.1:8000
+
+Press Ctrl+C to stop the server
+```
+
+访问给出的网址即可，其中 `LAN` 地址支持局域网内的设备访问（前提是没有开启隔离）
+
+### 使用说明
+
+- 搜索题库：**在主界面的搜索框输入关键词**，下拉栏支持模糊匹配和高亮显示，快速定位目标题目
+
+- 管理收藏：**点击题目的题号**，可以收藏你想重点复习的题目，支持导入导出收藏列表，方便跨设备使用
+  <img src="./_pic/star-2.png" style="zoom: 50%;" />
+
+- 资格计算器：根据个人信息和状态，自动计算是否满足小米解锁资格条件
+  <img src="./_Pic/calc.jpeg" style="zoom:33%;" />
+
+---
+
+## 许可协议
+
+本项目采用 MIT 许可证，欢迎自由使用、修改和分发，但禁止商业使用！
+
+**一切倒卖、投诉举报、恶意诋毁的行为都有可能导致本项目立刻删库跑路！！！！**
+
+---
+
+## 贡献指南
+
+欢迎任何形式的贡献！具体贡献流程和规范请查看 [CONTRIBUTING.md](./CONTRIBUTING.md)，无论是报告 Bug、提交代码、更新题库还是改进文档，我们都非常感谢你的参与！
+
+---
+
+## 致谢
+
+感谢 Google Material Design 团队提供的优秀 UI 组件，极大提升了应用体验，也感谢贡献者们的支持与帮助！
+
+祝你备考顺利，早日解锁你的小米设备 Bootloader！
