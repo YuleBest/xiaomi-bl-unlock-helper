@@ -46,15 +46,15 @@ jobs:
             terser "$file" -o "$file" -c -m || echo "Skip if already minified"
           done
 
-      - name: Push 压缩后的文件到 Cloudflare Pages
+      - name: 部署到 Cloudflare Pages
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan cf-pages
-          git rm -rf .
-          cp -r dist/* .
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git init
           git add .
-          git commit -m "Deploy compressed assets $(date)"
+          git commit -m "Deploy to cf-pages"
+          git branch -M cf-pages
+          git remote add origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/YuleBest/xiaomi-bl-unlock-helper.git
           git push -f origin cf-pages
 
       - name: 触发 Cloudflare Pages 部署
