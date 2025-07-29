@@ -15,8 +15,9 @@ const searchOptionsCheckbox = document.getElementById("searchOptions");
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
-// 初始化MDC TextField组件
-const textField = new mdc.textField.MDCTextField(document.querySelector('.mdc-text-field'));
+// 初始化MDC TextField组件（仅在存在时）
+const textFieldElement = document.querySelector('.mdc-text-field');
+const textField = textFieldElement ? new mdc.textField.MDCTextField(textFieldElement) : null;
 let currentSearchTerm = '';
 
 // 设置相关元素
@@ -65,7 +66,9 @@ async function loadAllData() {
         dataLoaded = true;
     } catch (e) {
         console.warn(`无法加载 ${dataFile}`, e);
-        resultsDiv.innerHTML = `<p class="mdc-typography--body1" style="text-align: center; padding: 16px;">加载题库数据失败，请检查文件是否存在或网络连接。</p>`;
+        if (resultsDiv) {
+            resultsDiv.innerHTML = `<p class="mdc-typography--body1" style="text-align: center; padding: 16px;">加载题库数据失败，请检查文件是否存在或网络连接。</p>`;
+        }
         allQuestions = []; // 确保在加载失败时 allQuestions 是一个空数组
     }
 }
@@ -297,14 +300,20 @@ function performSearch() {
 
 // 初始化搜索事件监听器
 function initializeSearchListeners() {
-    // 复选框变化时重新搜索
-    searchQuestionCheckbox.addEventListener("change", performSearch);
-    searchOptionsCheckbox.addEventListener("change", performSearch);
+    // 复选框变化时重新搜索（仅在元素存在时）
+    if (searchQuestionCheckbox) {
+        searchQuestionCheckbox.addEventListener("change", performSearch);
+    }
+    if (searchOptionsCheckbox) {
+        searchOptionsCheckbox.addEventListener("change", performSearch);
+    }
 
-    searchInput.addEventListener("input", async e => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(performSearch, 200); // 200ms 防抖
-    });
+    if (searchInput) {
+        searchInput.addEventListener("input", async e => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(performSearch, 200); // 200ms 防抖
+        });
+    }
 }
 
 // 本地存储相关函数
@@ -782,18 +791,27 @@ function resetSettings() {
     }
 }
 
-// 事件监听器
-settingsButton.addEventListener('click', toggleSettingsPanel);
+// 事件监听器（仅在元素存在时添加）
+if (settingsButton) {
+    settingsButton.addEventListener('click', toggleSettingsPanel);
+}
 
-addFuzzyBtn.addEventListener('click', () => {
-    fuzzyKeywordsContainer.appendChild(createFuzzyKeywordItem());
-});
+if (addFuzzyBtn) {
+    addFuzzyBtn.addEventListener('click', () => {
+        fuzzyKeywordsContainer.appendChild(createFuzzyKeywordItem());
+    });
+}
 
-addTrickyBtn.addEventListener('click', () => {
-    trickyWordsContainer.appendChild(createTrickyWordItem());
-});
+if (addTrickyBtn) {
+    addTrickyBtn.addEventListener('click', () => {
+        trickyWordsContainer.appendChild(createTrickyWordItem());
+    });
+}
 
-document.getElementById('resetSettingsBtn').addEventListener('click', resetSettings);
+const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+if (resetSettingsBtn) {
+    resetSettingsBtn.addEventListener('click', resetSettings);
+}
 
 // 主题切换功能
 function initializeTheme() {
@@ -844,7 +862,9 @@ if (themeToggle) {
 // 初始化主题
 initializeTheme();
 
-applySettingsBtn.addEventListener('click', applySettings);
+if (applySettingsBtn) {
+    applySettingsBtn.addEventListener('click', applySettings);
+}
 
 // 显示重要声明对话框
 function showDisclaimerDialog() {
@@ -974,8 +994,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 显示题库更新时间（确保在数据加载完成后）
     displayLastUpdateTime();
     
-    // 初始显示所有题目
-    performSearch();
+    // 初始显示所有题目（仅在主页）
+    if (searchInput && resultsDiv) {
+        performSearch();
+    }
     
     // 添加计算器按钮事件监听器
     const calculatorBtn = document.getElementById('calculatorBtn');

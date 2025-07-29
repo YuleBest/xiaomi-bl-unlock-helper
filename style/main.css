@@ -332,6 +332,7 @@ body {
     word-wrap: break-word; /* 强制长文字换行 */
     word-break: break-word; /* 兼容性换行 */
     overflow-wrap: break-word; /* 现代浏览器换行 */
+    white-space: normal; /* 确保文本正常换行 */
     display: block; /* 改为块级布局，避免flex导致的文本中断 */
     color: var(--text-color); /* 确保深色模式下可读 */
 }
@@ -440,6 +441,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 
 .mdc-list-item {
     padding: 8px; /* 重置默认padding，使用question-item的padding */
+    position: relative; /* 为绝对定位的按钮提供定位上下文 */
 }
 
 .mdc-list-item__text {
@@ -1611,6 +1613,43 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     background-color: rgba(255, 193, 7, 0.1);
     color: #ff9800;
     border-color: #ff9800;
+}
+
+/* Star页面收藏按钮样式 */
+.star-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.star-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.star-btn .material-icons {
+    font-size: 20px;
+    color: var(--icon-color);
+    transition: color 0.2s ease;
+}
+
+.star-btn.starred .material-icons {
+    color: #ff9800;
+}
+
+.star-btn.starred:hover {
+    background-color: rgba(255, 152, 0, 0.1);
 }
 
 .modal-action-btn.copy-action {

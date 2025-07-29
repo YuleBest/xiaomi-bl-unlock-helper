@@ -1,6 +1,4 @@
-mdc.autoInit();
-        
-        // 收藏功能相关函数（从app.js复制）
+// 收藏功能相关函数（从app.js复制）
          function getStarredQuestions() {
              const starred = localStorage.getItem('starredQuestions');
              return starred ? JSON.parse(starred) : {};
