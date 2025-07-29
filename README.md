@@ -153,7 +153,7 @@ Press Ctrl+C to stop the server
   <img src="./_pic/star-2.png" style="zoom: 50%;" />
 
 - 资格计算器：根据个人信息和状态，自动计算是否满足小米解锁资格条件
-  <img src="./_Pic/calc.jpeg" style="zoom:33%;" />
+  <img src="./_pic/calc.jpeg" style="zoom:33%;" />
 
 ---
 
@@ -173,6 +173,8 @@ Press Ctrl+C to stop the server
 
 ## 致谢
 
-感谢 Google Material Design 团队提供的优秀 UI 组件，极大提升了应用体验，也感谢贡献者们的支持与帮助！
+- [Google Material Components Web](https://github.com/material-components/material-components-web) ，使用 MIT 许可证
+
+---
 
 祝你备考顺利，早日解锁你的小米设备 Bootloader！
