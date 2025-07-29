@@ -66,9 +66,7 @@ async function loadAllData() {
         dataLoaded = true;
     } catch (e) {
         console.warn(`无法加载 ${dataFile}`, e);
-        if (resultsDiv) {
-            resultsDiv.innerHTML = `<p class="mdc-typography--body1" style="text-align: center; padding: 16px;">加载题库数据失败，请检查文件是否存在或网络连接。</p>`;
-        }
+        resultsDiv.innerHTML = `<p class="mdc-typography--body1" style="text-align: center; padding: 16px;">加载题库数据失败，请检查文件是否存在或网络连接。</p>`;
         allQuestions = []; // 确保在加载失败时 allQuestions 是一个空数组
     }
 }
