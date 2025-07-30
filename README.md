@@ -1,4 +1,4 @@
-<p align="center"><img src="favicon.png" style="width: 30%;"></p>
+<p align="center"><img src="./docs/img/favicon.png" style="width: 30%;"></p>
 <h1 align="center"> Xiaomi BL Unlock Helper </h1>
 <h3 align="center"> 小米 BL 解锁答题助手 </h3>
 <p align="center">一款面向小米手机用户的客户端 Web 应用，助你备考小米解锁 Bootloader 考试，应用支持智能题库搜索、收藏管理和解锁资格计算，且支持离线运行</p>
