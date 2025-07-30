@@ -23,17 +23,17 @@
 
 它通过集成题库数据，实现模糊搜索、收藏管理以及解锁资格计算功能，支持离线使用，该项目旨在提供轻量、易用且功能丰富的备考工具，帮助用户高效掌握解锁相关知识点。
 
-![V1.4.1 - 主页](./_pic/home.jpeg)
+![V1.4.1 - 主页](./docs/img/home.jpeg)
 
 ---
 
 ## 主要功能
 
-| 模块名称           | 路径    | 主要脚本        | 作用说明                                                     |
-| ------------------ | ------- | --------------- | ------------------------------------------------------------ |
-| 题库智能搜索与浏览 | `/`     | `/app/app.js`   | 题库智能搜索与浏览，支持模糊匹配与关键词高亮，快速定位所需题目 |
-| 收藏管理           | `/star` | `/star/star.js` | 收藏题目管理与导入导出，方便收藏重要题目，支持浏览器本地持久化及导入导出 |
-| 解锁资格计算器     | `/calc` | `/calc/calc.js` | 自动计算解锁资格条件，输入相关信息，自动判断解锁资格是否满足要求 |
+| 模块名称           | 路径    | 主要脚本             | 作用说明                                                                 |
+| ------------------ | ------- | -------------------- | ------------------------------------------------------------------------ |
+| 题库智能搜索与浏览 | `/`     | `/assets/js/main.js` | 题库智能搜索与浏览，支持模糊匹配与关键词高亮，快速定位所需题目           |
+| 收藏管理           | `/star` | `/assets/js/star.js` | 收藏题目管理与导入导出，方便收藏重要题目，支持浏览器本地持久化及导入导出 |
+| 解锁资格计算器     | `/calc` | `/assets/js/calc.js` | 自动计算解锁资格条件，输入相关信息，自动判断解锁资格是否满足要求         |
 
 ---
 
@@ -48,49 +48,110 @@
 - 用户收藏和自定义搜索偏好通过浏览器 `localStorage` 本地保存
 
   - 收藏数据支持文件导入导出，方便跨设备同步
-    <img src="./_pic/star.jpeg" />
+    <img src="./docs/img/star.jpeg" />
 
 ### 开发环境
+
 ### 技术栈
 
+#### 项目结构
+
+> V1.4.2
+
 ```
-├─ LICENSE
-├─ README.md
-├─ _pic
-│   ├─ calc.jpeg
-│   ├─ home.jpeg
-│   ├─ star-2.png
-│   └─ star.jpeg
-├─ app
-│   ├─ app.js
-│   └─ material-components-web.min.js
-├─ calc
-│   ├─ _note.md
-│   ├─ calc.js
-│   └─ index.html
-├─ data
-│   └─ database
-│       └─ questions.json
-├─ favicon.png
-├─ index.html
-├─ server.py
-├─ star
-│   ├─ index.html
-│   └─ star.js
-└─ style
-    ├─ main.css
-    ├─ material-components-web.min.css
-    └─ material-icon-font.woff2
+├─ LICENSE                                # 许可证
+├─ README.md                              # 说明文档
+
+├─ assets                                 # 静态资源目录
+│   ├─ css                                  # CSS 目录
+│   │   ├─ main.css                         # 主 CSS 文件
+│   │   └─ material-components-web.css      # MDC CSS 文件
+
+│   ├─ fonts                              # 字体目录
+│   │   └─ material-icon-font.woff2         # MDC ICON 字体文件
+
+│   ├─ images                             # 图片目录
+│   │   └─ favicon.png                      # 网站图标
+
+│   └─ js                                 # JS 目录
+│       ├─ calc.js                          # 解锁资格计算器脚本
+│       ├─ main.js                          # 项目主脚本
+│       ├─ material-components-web.js       # MDC 脚本
+│       └─ star.js                          # 收藏管理脚本
+
+├─ calc                                   # 解锁资格计算器模块
+│   ├─ note.md                              # 解锁资格计算器说明文档
+│   └─ index.html                           # 解锁资格计算器页面
+
+├─ star                                   # 收藏管理模块
+│   └─ index.html                           # 收藏管理页面
+
+├─ data                                   # 项目数据目录
+│   └─ database                             # 数据库目录
+│       └─ questions.json                   # 题库 JSON 文件
+
+├─ docs                                   # 文档目录
+│   ├─ CONTRIBUTING.md                    # 贡献者指南
+│   └─ img                                # 文档图片目录
+│       ├─ calc.jpeg
+│       ├─ home.jpeg
+│       ├─ star-2.png
+│       └─ star.jpeg
+
+├─ index.html                             # 主页面
+└─ server.py                              # 部署本地服务器脚本
+```
+
+```mermaid
+flowchart TD
+    A[项目根目录] --> B1[LICENSE / README.md]
+    A --> B2[assets 静态资源]
+    A --> B3[calc 解锁资格计算器]
+    A --> B4[star 收藏管理模块]
+    A --> B5[data 项目数据]
+    A --> B6[docs 文档]
+    A --> B7[index.html 主页面]
+    A --> B8[server.py 本地服务器]
+
+    B2 --> C1[css/]
+    C1 --> D1[main.css]
+    C1 --> D2[material-components-web.css]
+
+    B2 --> C2[fonts/]
+    C2 --> D3[material-icon-font.woff2]
+
+    B2 --> C3[images/]
+    C3 --> D4[favicon.png]
+
+    B2 --> C4[js/]
+    C4 --> D5[main.js]
+    C4 --> D6[calc.js]
+    C4 --> D7[star.js]
+    C4 --> D8[material-components-web.js]
+
+    B3 --> E1[calc/index.html]
+    B3 --> E2[note.md]
+
+    B4 --> F1[star/index.html]
+
+    B5 --> G1[database/]
+    G1 --> H1[questions.json]
+
+    B6 --> I1[CONTRIBUTING.md]
+    B6 --> I2[img/]
+    I2 --> J1[calc.jpeg]
+    I2 --> J2[home.jpeg]
+    I2 --> J3[star-2.png]
+    I2 --> J4[star.jpeg]
 ```
 
 #### 前端
 
 - HTML + CSS+ JavaScript
 
+​ Material Design Components (`material-components-web.min.js`)
 
-​		Material Design Components (`material-components-web.min.js`)
-
-​		自定义 CSS (`style/main.css`) 实现主题和响应式布局
+​ 自定义 CSS (`style/main.css`) 实现主题和响应式布局
 
 #### 数据管理
 
@@ -150,10 +211,10 @@ Press Ctrl+C to stop the server
 - 搜索题库：**在主界面的搜索框输入关键词**，下拉栏支持模糊匹配和高亮显示，快速定位目标题目
 
 - 管理收藏：**点击题目的题号**，可以收藏你想重点复习的题目，支持导入导出收藏列表，方便跨设备使用
-  <img src="./_pic/star-2.png" style="zoom: 50%;" />
+  <img src="./docs/img/star-2.png" style="zoom: 50%;" />
 
 - 资格计算器：根据个人信息和状态，自动计算是否满足小米解锁资格条件
-  <img src="./_pic/calc.jpeg" style="zoom:33%;" />
+  <img src="./docs/img/calc.jpeg" style="zoom:33%;" />
 
 ---
 
@@ -167,7 +228,7 @@ Press Ctrl+C to stop the server
 
 ## 贡献指南
 
-欢迎任何形式的贡献！具体贡献流程和规范请查看 [CONTRIBUTING.md](./CONTRIBUTING.md)，无论是报告 Bug、提交代码、更新题库还是改进文档，我们都非常感谢你的参与！
+欢迎任何形式的贡献！具体贡献流程和规范请查看 [CONTRIBUTING.md](./docs/CONTRIBUTING.md)，无论是报告 Bug、提交代码、更新题库还是改进文档，我们都非常感谢你的参与！
 
 ---
 

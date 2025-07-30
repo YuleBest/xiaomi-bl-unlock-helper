@@ -28,6 +28,8 @@ jobs:
           cp -r index.html favicon.png style app calc star data _pic dist/
           find dist -name '*.md' -delete
           find dist -name 'server.py' -delete
+          find dist -name 'LICENSE' -delete
+          rm -rf dist/docs
 
       - name: 压缩 HTML / CSS / JS 文件
         run: |
