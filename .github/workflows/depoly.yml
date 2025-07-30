@@ -25,11 +25,8 @@ jobs:
         run: |
           set -e
           mkdir -p dist
-          cp -r index.html favicon.png style app calc star data _pic dist/
+          cp -r index.html assets calc star data dist/
           find dist -name '*.md' -delete
-          find dist -name 'server.py' -delete
-          find dist -name 'LICENSE' -delete
-          rm -rf dist/docs
 
       - name: 压缩 HTML / CSS / JS 文件
         run: |
