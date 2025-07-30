@@ -371,8 +371,7 @@ body {
 }
 
 /* 为加载文本添加样式 */
-#results p,
-#results div[style*="text-align: center"] /* 兼容旧的 "加载数据中..." 写法 */
+#results p /* 兼容旧的 "加载数据中..." 写法 */
 {
     padding: 16px;
     text-align: center;
@@ -394,27 +393,17 @@ body {
 }
 
 /* 覆盖所有 Material Design 组件的 Roboto 字体设置 */
-.mdc-banner .mdc-banner__text,
-.mdc-button .mdc-button__label,
+
 .mdc-list-item__text,
 .mdc-list-item__secondary-text,
-.mdc-typography--headline4,
-.mdc-typography--headline5,
-.mdc-typography--headline6,
-.mdc-typography--subtitle1,
-.mdc-typography--subtitle2,
-.mdc-typography--body1,
-.mdc-typography--body2,
-.mdc-typography--caption,
-.mdc-typography--button,
-.mdc-typography--overline {
+.mdc-typography--body1 {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
 }
 
 /* 覆盖所有基础HTML元素的字体设置，但排除Material Icons */
 body, html,
-h1, h2, h3, h4, h5, h6,
-p, div, a, li, ul, ol,
+h1, h2, h3, h4,
+p, div, a, li, ul,
 label, input, textarea,
 .starred-count, .notice-text, .calc-description {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important; /* 使用系统字体 */
@@ -452,12 +441,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 .mdc-list-item__secondary-text {
     display: block;
     color: var(--icon-color);
-}
-
-.mdc-typography--headline4 {
-    text-align: center;
-    margin-bottom: 24px;
-    color: var(--text-color);
 }
 
 /* 搜索词高亮样式 */
@@ -690,11 +673,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
         padding: 16px;
         padding-bottom: 0;
         box-sizing: border-box;
-    }
-    
-    .mdc-typography--headline4 {
-        font-size: 1.5rem;
-        margin-bottom: 16px;
     }
     
     .mdc-text-field {
@@ -1698,36 +1676,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 }
 
 /* 收藏入口样式 */
-.starred-questions-entry {
-    margin-top: 6px;
-    padding: 0 0px;
-}
-
-.starred-entry-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 16px;
-    background-color: var(--input-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    color: var(--text-color);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-.starred-entry-btn:hover {
-    background-color: var(--hover-color);
-    border-color: #ffc107;
-}
-
-.starred-entry-btn .material-icons {
-    color: #ffc107;
-    font-size: 18px;
-}
 
 /* 收藏页面样式 */
 .starred-header {
@@ -1759,8 +1707,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 .back-btn,
 .backup-btn,
 .import-btn,
-.clear-all-btn,
-.back-to-home-btn {
+.clear-all-btn {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -1775,8 +1722,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
     text-decoration: none;
 }
 
-.back-btn:hover,
-.back-to-home-btn:hover {
+.back-btn:hover {
     background-color: var(--hover-color);
     border-color: var(--text-color);
 }
@@ -1814,8 +1760,7 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
 .back-btn .material-icons,
 .backup-btn .material-icons,
 .import-btn .material-icons,
-.clear-all-btn .material-icons,
-.back-to-home-btn .material-icons {
+.clear-all-btn .material-icons {
     font-size: 18px;
 }
 
@@ -2162,15 +2107,6 @@ button:not(.top-bar-btn):not(.mdc-icon-button):not(.modal-action-btn):not(.foote
          font-size: 14px;
      }
  }
-    
-    .starred-questions-entry {
-        margin-top: 2px;
-    }
-    
-    .starred-entry-btn {
-        padding: 14px 16px;
-        font-size: 15px;
-    }
     
     .empty-state {
         padding: 40px 20px;
